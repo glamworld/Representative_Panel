@@ -130,7 +130,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
         children: [
           //Header...
           Container(
-            height: size.height * .17,
+            height: size.height * .18,
             width: size.width,
             color: Theme.of(context).primaryColor,
             child: ListTile(
@@ -156,39 +156,36 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                   )
                 ],
               ),
-              subtitle: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.genericName,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic),
-                    ),
-                    Text(
-                      widget.dosage,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      '৳ ${widget.price}',
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      widget.manufacturer,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    //SizedBox(height: 5),
-                  ],
-                ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.genericName,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    widget.dosage,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    '৳ ${widget.price}',
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    widget.manufacturer,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  //SizedBox(height: 5),
+                ],
               ),
             ),
           ),

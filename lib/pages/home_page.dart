@@ -9,7 +9,6 @@ import 'package:representative_panel/utils/custom_clipper.dart';
 import '../notification_widget.dart';
 import 'add_medicine.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,19 +17,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<MedicineModel> filteredMedicine = List();
   List<MedicineModel> medicineList = List();
-  int _count=0;
+  int _count = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    FirebaseProvider operation =
-    Provider.of<FirebaseProvider>(context);
-    AuthProvider auth =
-    Provider.of<AuthProvider>(context);
-    if(_count==0){
-      operation.getMedicine(auth).then((value){
+    FirebaseProvider operation = Provider.of<FirebaseProvider>(context);
+    AuthProvider auth = Provider.of<AuthProvider>(context);
+    if (_count == 0) {
+      operation.getMedicine(auth).then((value) {
         setState(() {
-          medicineList=operation.medicineList;
-          filteredMedicine=medicineList;
+          medicineList = operation.medicineList;
+          filteredMedicine = medicineList;
           _count++;
         });
       });
@@ -50,21 +48,22 @@ class _HomePageState extends State<HomePage> {
             onChanged: (string) {
               setState(() {
                 filteredMedicine = medicineList
-                    .where((u) => (u.name
-                    .toLowerCase()
-                    .contains(string.toLowerCase())))
+                    .where((u) =>
+                        (u.name.toLowerCase().contains(string.toLowerCase())))
                     .toList();
               });
-
             },
           ),
           SizedBox(height: 8),
-          Expanded(child: _count==0?Center(child: CircularProgressIndicator()):_bodyUI()),
+          Expanded(
+              child: _count == 0
+                  ? Center(child: CircularProgressIndicator())
+                  : _bodyUI()),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddMedicine())),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddMedicine())),
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 2,
         tooltip: "Add medicine",
@@ -77,16 +76,15 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
+
   Widget _bodyUI() {
     Size size = MediaQuery.of(context).size;
-    FirebaseProvider operation =
-    Provider.of<FirebaseProvider>(context);
-    AuthProvider auth =
-    Provider.of<AuthProvider>(context);
+    FirebaseProvider operation = Provider.of<FirebaseProvider>(context);
+    AuthProvider auth = Provider.of<AuthProvider>(context);
 
     return RefreshIndicator(
       backgroundColor: Colors.white,
-      onRefresh: ()=>operation.getMedicine(auth),
+      onRefresh: () => operation.getMedicine(auth),
       child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: filteredMedicine.length,
@@ -133,14 +131,14 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Color(0xffBCEDF2),
-                  ],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  tileMode: TileMode.clamp,
-                )),
+              colors: [
+                Theme.of(context).primaryColor,
+                Color(0xffBCEDF2),
+              ],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              tileMode: TileMode.clamp,
+            )),
           ),
         ),
       ),
@@ -169,157 +167,157 @@ class MedicineTile extends StatelessWidget {
   String modeOfAction;
   String interaction;
   String darNo;
-  MedicineTile({
-    this.id,
-    this.name,
-    this.strength,
-    this.genericName,
-    this.dosage,
-    this.manufacturer,
-    this.price,
-    this.indications,
-    this.adultDose,
-    this.childDose,
-    this.renalDose,
-    this.administration,
-    this.contradiction,
-    this.sideEffect,
-    this.precautions,
-    this.pregnancy,
-    this.therapeutic,
-    this.modeOfAction,
-    this.interaction,
-    this.darNo});
+
+  MedicineTile(
+      {this.id,
+      this.name,
+      this.strength,
+      this.genericName,
+      this.dosage,
+      this.manufacturer,
+      this.price,
+      this.indications,
+      this.adultDose,
+      this.childDose,
+      this.renalDose,
+      this.administration,
+      this.contradiction,
+      this.sideEffect,
+      this.precautions,
+      this.pregnancy,
+      this.therapeutic,
+      this.modeOfAction,
+      this.interaction,
+      this.darNo});
+
   @override
   Widget build(BuildContext context) {
+    AuthProvider auth = Provider.of<AuthProvider>(context);
+    FirebaseProvider operation = Provider.of<FirebaseProvider>(context);
     Size size = MediaQuery.of(context).size;
-    FirebaseProvider operation =
-    Provider.of<FirebaseProvider>(context);
-    AuthProvider auth =
-    Provider.of<AuthProvider>(context);
     return Container(
-        margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey[300], offset: Offset(1, 1), blurRadius: 2)
-            ]),
-        child: ListTile(
-          onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineDetails(
-            id: id,
-              name:name,
-              strength:strength,
-              genericName:genericName,
-              dosage:dosage,
-              manufacturer:manufacturer,
-              price:price,
-              indications:indications,
-              adultDose:adultDose,
-              childDose:childDose,
-              renalDose:renalDose,
-              administration:administration,
-              contradiction:contradiction,
-              sideEffect:sideEffect,
-              precautions:precautions,
-              pregnancy:pregnancy,
-              therapeutic:therapeutic,
-              modeOfAction:modeOfAction,
-              interaction:indications,
-              darNo:darNo
-          )
-          )),
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
+      margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey[300], offset: Offset(1, 1), blurRadius: 2)
+          ]),
+      child: ListTile(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MedicineDetails(
+                    id: id,
+                    name: name,
+                    strength: strength,
+                    genericName: genericName,
+                    dosage: dosage,
+                    manufacturer: manufacturer,
+                    price: price,
+                    indications: indications,
+                    adultDose: adultDose,
+                    childDose: childDose,
+                    renalDose: renalDose,
+                    administration: administration,
+                    contradiction: contradiction,
+                    sideEffect: sideEffect,
+                    precautions: precautions,
+                    pregnancy: pregnancy,
+                    therapeutic: therapeutic,
+                    modeOfAction: modeOfAction,
+                    interaction: indications,
+                    darNo: darNo))),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              maxLines: 1,
+              style: TextStyle(fontSize: 17, color: Colors.grey[900]),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                '$strength mg',
                 maxLines: 1,
-                style: TextStyle(fontSize: 17, color: Colors.grey[900]),
+                style: TextStyle(fontSize: 11, color: Colors.grey[500]),
               ),
-              SizedBox(
-                width: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Text(
-                  '$strength mg',
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 11, color: Colors.grey[500]),
-                ),
-              )
-            ],
+            )
+          ],
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              genericName,
+              maxLines: 1,
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+            ),
+            Text(
+              dosage,
+              maxLines: 1,
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              '৳ $price',
+              maxLines: 1,
+              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
+            ),
+            SizedBox(
+              height: 2,
+            ),
+            Text(
+              manufacturer,
+              maxLines: 1,
+              style: TextStyle(
+                  fontSize: 12, color: Theme.of(context).primaryColor),
+            ),
+          ],
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                Widget okButton = FlatButton(
+                  child: Text("YES"),
+                  onPressed: () {
+                    operation.loadingMgs = 'Please wait...';
+                    showLoadingDialog(context, operation);
+                    operation.deleteMedicine(id, context, operation, auth);
+                  },
+                );
+                Widget noButton = FlatButton(
+                  child: Text("No"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                );
+                AlertDialog alert = AlertDialog(
+                  title: Text(
+                      "Are you sure you want to delete this representative?"),
+                  content: Text("This representative will be deleted"),
+                  actions: [noButton, okButton],
+                );
+                return alert;
+              },
+            );
+          },
+          icon: Icon(
+            Icons.delete,
+            color: Colors.red,
           ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                genericName,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-              ),
-
-              Text(
-                dosage,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                '৳ $price',
-                maxLines: 1,
-                style: TextStyle(fontSize: 14, color: Colors.grey[800]),
-              ),
-
-              SizedBox(
-                height: 2,
-              ),
-              Text(
-                manufacturer,
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 12, color: Theme.of(context).primaryColor),
-              ),
-            ],
-          ),
-          trailing: IconButton(
-            onPressed: (){
-              showDialog(
-                context: context,
-                builder: (context) {
-                  Widget okButton = FlatButton(
-                    child: Text("YES"),
-                    onPressed: () {
-                      operation.loadingMgs = 'Please wait...';
-                      showLoadingDialog(context, operation);
-                      operation.deleteMedicine(id,context,operation,auth);
-
-                    },
-                  );
-                  Widget noButton = FlatButton(
-                    child: Text("No"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  );
-                  AlertDialog alert = AlertDialog(
-                    title: Text("Are you sure you want to delete this representative?"),
-                    content: Text("This representative will be deleted"),
-                    actions: [
-                      noButton,
-                      okButton
-                    ],
-                  );
-                  return alert;
-                },
-              );
-            },
-            icon: Icon(Icons.delete,color: Colors.red,),
-          ),
-        ),);
+        ),
+      ),
+    );
   }
 }

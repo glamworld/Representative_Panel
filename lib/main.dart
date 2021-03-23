@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
               unselectedIconTheme: IconThemeData(color: Colors.grey[800]),
             )),
         debugShowCheckedModeBanner: false,
-        home: id == null && pass == null ? LogIn() : HomePage(),
+        home: id == null ? LogIn() : HomePage(),
       ),
     );
   }
