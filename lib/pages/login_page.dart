@@ -9,8 +9,8 @@ import 'package:representative_panel/providers/firebase_provider.dart';
 import 'package:representative_panel/utils/form_decoration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'pages/home_page.dart';
-import 'notification_widget.dart';
+import 'home_page.dart';
+import '../notification_widget.dart';
 
 class LogIn extends StatefulWidget {
   @override

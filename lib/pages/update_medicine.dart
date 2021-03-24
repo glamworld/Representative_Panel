@@ -139,6 +139,7 @@ class _UpdateMedicineState extends State<UpdateMedicine> {
 
     Size size = MediaQuery.of(context).size;
     return Container(
+      width: size.width*.95,
       color: Colors.white,
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: SingleChildScrollView(

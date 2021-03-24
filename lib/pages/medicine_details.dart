@@ -4,6 +4,7 @@ import 'package:representative_panel/pages/update_medicine.dart';
 import 'package:representative_panel/utils/button_widgets.dart';
 import 'package:representative_panel/utils/custom_clipper.dart';
 import 'package:representative_panel/utils/static_variable_page.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // ignore: must_be_immutable
 class MedicineDetails extends StatefulWidget {
@@ -55,6 +56,7 @@ class MedicineDetails extends StatefulWidget {
 class _MedicineDetailsState extends State<MedicineDetails> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -192,25 +194,30 @@ class _MedicineDetailsState extends State<MedicineDetails> {
 
           //body...
           Expanded(
-            child: Container(
-              height: size.height * .55,
-              width: size.width,
-              color: Colors.white,
+            child: AnimationLimiter(
               child: ListView.builder(
                 itemCount: 12,
-                itemBuilder: (context, index) =>
-                    EntryItemTile(medicineDataList(widget.indications,
-                        widget.adultDose,
-                        widget.childDose,
-                        widget.renalDose,
-                        widget.administration,
-                        widget.contradiction,
-                        widget.sideEffect,
-                        widget.precautions,
-                        widget.pregnancy,
-                        widget.therapeutic,
-                        widget.modeOfAction,
-                        widget.interaction)[index]),
+                itemBuilder: (context, index){
+                  return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 500),
+                      child: SlideAnimation(
+                        verticalOffset: 400,
+                        child: FadeInAnimation(
+                          child:EntryItemTile(medicineDataList(widget.indications,
+                              widget.adultDose,
+                              widget.childDose,
+                              widget.renalDose,
+                              widget.administration,
+                              widget.contradiction,
+                              widget.sideEffect,
+                              widget.precautions,
+                              widget.pregnancy,
+                              widget.therapeutic,
+                              widget.modeOfAction,
+                              widget.interaction)[index]),),
+                      )
+                  );},
               ),
             ),
           )

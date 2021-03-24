@@ -192,132 +192,135 @@ class MedicineTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider auth = Provider.of<AuthProvider>(context);
-    FirebaseProvider operation = Provider.of<FirebaseProvider>(context);
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey[300], offset: Offset(1, 1), blurRadius: 2)
-          ]),
-      child: ListTile(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MedicineDetails(
-                    id: id,
-                    name: name,
-                    strength: strength,
-                    genericName: genericName,
-                    dosage: dosage,
-                    manufacturer: manufacturer,
-                    price: price,
-                    indications: indications,
-                    adultDose: adultDose,
-                    childDose: childDose,
-                    renalDose: renalDose,
-                    administration: administration,
-                    contradiction: contradiction,
-                    sideEffect: sideEffect,
-                    precautions: precautions,
-                    pregnancy: pregnancy,
-                    therapeutic: therapeutic,
-                    modeOfAction: modeOfAction,
-                    interaction: indications,
-                    darNo: darNo))),
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              maxLines: 1,
-              style: TextStyle(fontSize: 17, color: Colors.grey[900]),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Text(
-                '$strength mg',
-                maxLines: 1,
-                style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+    final FirebaseProvider operation = Provider.of<FirebaseProvider>(context);
+    final AuthProvider auth = Provider.of<AuthProvider>(context);
+    final Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MedicineDetails(
+                  name: name,
+                  strength: strength,
+                  genericName: genericName,
+                  dosage: dosage,
+                  manufacturer: manufacturer,
+                  price: price,
+                  indications: indications,
+                  adultDose: adultDose,
+                  childDose: childDose,
+                  renalDose: renalDose,
+                  administration: administration,
+                  contradiction: contradiction,
+                  sideEffect: sideEffect,
+                  precautions: precautions,
+                  pregnancy: pregnancy,
+                  therapeutic: therapeutic,
+                  modeOfAction: modeOfAction,
+                  interaction: indications,
+                  darNo: darNo))),
+      child: Container(
+          margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey[300],
+                    offset: Offset(1, 1),
+                    blurRadius: 2)
+              ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: name,
+                      style: TextStyle(
+                          fontSize: size.width * .05, color: Colors.grey[900]),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' $strength',
+                          style: TextStyle(
+                            fontSize: size.width * .03, color: Colors.grey[700],
+                            //decorationStyle: TextDecorationStyle.dotted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    maxLines: 1,
+                  ),
+                  Text(
+                    genericName,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: size.width * .038,
+                        color: Colors.grey[700],
+                        fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    dosage,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: size.width * .038, color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    '৳ $price',
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: size.width * .041, color: Colors.grey[800]),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    manufacturer,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: size.width * .038,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              genericName,
-              maxLines: 1,
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-            ),
-            Text(
-              dosage,
-              maxLines: 1,
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              '৳ $price',
-              maxLines: 1,
-              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
-            ),
-            SizedBox(
-              height: 2,
-            ),
-            Text(
-              manufacturer,
-              maxLines: 1,
-              style: TextStyle(
-                  fontSize: 12, color: Theme.of(context).primaryColor),
-            ),
-          ],
-        ),
-        trailing: IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                Widget okButton = FlatButton(
-                  child: Text("YES"),
-                  onPressed: () {
-                    operation.loadingMgs = 'Please wait...';
-                    showLoadingDialog(context, operation);
-                    operation.deleteMedicine(id, context, operation, auth);
-                  },
-                );
-                Widget noButton = FlatButton(
-                  child: Text("No"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                );
-                AlertDialog alert = AlertDialog(
-                  title: Text(
-                      "Are you sure you want to delete this representative?"),
-                  content: Text("This representative will be deleted"),
-                  actions: [noButton, okButton],
-                );
-                return alert;
-              },
-            );
-          },
-          icon: Icon(
-            Icons.delete,
-            color: Colors.red,
-          ),
-        ),
-      ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      Widget okButton = FlatButton(
+                        child: Text("YES"),
+                        onPressed: () {
+                          operation.loadingMgs = 'Please wait...';
+                          showLoadingDialog(context, operation);
+                          operation.deleteMedicine(id, context, operation, auth);
+                        },
+                      );
+                      Widget noButton = FlatButton(
+                        child: Text("No"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                      AlertDialog alert = AlertDialog(
+                        title: Text(
+                            "Are you sure you want to delete this representative?"),
+                        content: Text("This representative will be deleted"),
+                        actions: [noButton, okButton],
+                      );
+                      return alert;
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

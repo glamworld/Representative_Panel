@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:representative_panel/login_page.dart';
+import 'file:///C:/Projects/flutter/representative_panel/lib/pages/login_page.dart';
 import 'file:///C:/Projects/flutter/representative_panel/lib/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:representative_panel/providers/auth_provider.dart';
