@@ -6,8 +6,10 @@ import 'package:representative_panel/providers/auth_provider.dart';
 import 'package:representative_panel/providers/firebase_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:representative_panel/utils/custom_clipper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../notification_widget.dart';
 import 'add_medicine.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -141,8 +143,45 @@ class _HomePageState extends State<HomePage> {
             )),
           ),
         ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return {'Logout'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
     );
+  }
+  void handleClick(String value) async{
+    final FirebaseProvider operation = Provider.of<FirebaseProvider>(context,listen: false);
+    final AuthProvider regAuth = Provider.of<AuthProvider>(context,listen: false);
+    // switch (value) {
+    //   case 'Logout':
+    if(value=='Logout') {
+      operation.loadingMgs = 'Logging out...';
+      showLoadingDialog(context, operation);
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setString('id', null).then((value) {
+        regAuth.representativeDetails = null;
+        Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LogIn()),
+            (Route<dynamic> route) => false);
+        //await FirebaseAuth.instance.signOut().then((value) {});
+      });
+    }
+    //break;
+
+    //}
   }
 }
 

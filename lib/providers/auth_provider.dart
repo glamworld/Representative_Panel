@@ -12,10 +12,12 @@ class AuthProvider extends ChangeNotifier{
   ManufacturerRepresentativeModel _representativeDetails= ManufacturerRepresentativeModel();
   MedicineModel _medicineModel = MedicineModel();
   String _loadingMgs;
+  String _verificationCode;
 
   get representativeDetails=>_representativeDetails;
   get medicineModel=> _medicineModel;
   get loadingMgs=>_loadingMgs;
+  get verificationCode => _verificationCode;
 
   set representativeDetails(ManufacturerRepresentativeModel model){
     model =  ManufacturerRepresentativeModel();
@@ -30,6 +32,11 @@ class AuthProvider extends ChangeNotifier{
 
   set loadingMgs(String val){
     _loadingMgs = val;
+    notifyListeners();
+  }
+
+  set verificationCode(String val) {
+    _verificationCode = val;
     notifyListeners();
   }
 
